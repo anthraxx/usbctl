@@ -1,0 +1,9 @@
+[Unit]
+Description=deny new usb devices
+
+[Service]
+Type=oneshot
+ExecStart=/bin/sh -c 'echo 1 > /proc/sys/kernel/deny_new_usb'
+
+[Install]
+WantedBy=multi-user.target
