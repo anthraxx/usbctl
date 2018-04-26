@@ -1,0 +1,26 @@
+#!/bin/sh
+set -e
+
+deny_new_usb() {
+	echo "$1" | sudo tee /proc/sys/kernel/deny_new_usb > /dev/null
+}
+
+usb_status() {
+	if grep -q 1 /proc/sys/kernel/deny_new_usb; then
+		printf '\e[32;1m'
+	else
+		printf '\e[31;1mUN'
+	fi
+	printf 'PROTECTED\e[0m\n'
+}
+
+case "$1" in
+	enable|unprotect)
+		deny_new_usb 0
+		;;
+	disable|protect)
+		deny_new_usb 1
+		;;
+esac
+
+usb_status
