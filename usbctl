@@ -9,8 +9,8 @@ usage() {
 	echo "Control to deny new usb devices."
 	echo
 	echo "Available commands:"
-	echo "  protect       disable protection against new usb devices"
-	echo "  unprotect     enable protection against new usb devices"
+	echo "  protect       enable protection against new usb devices"
+	echo "  unprotect     disable protection against new usb devices"
 	echo "  temporary     temporarily disable protection (default 10 sec)"
 	echo "  check         exits with 1 if usb is unprotected"
 	echo "  status        print current protection status"
