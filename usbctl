@@ -89,3 +89,5 @@ case "$1" in
 		usage
 		;;
 esac
+
+# vim:set noet:
