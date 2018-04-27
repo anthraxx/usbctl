@@ -3,7 +3,7 @@ Description=deny new usb devices
 
 [Service]
 Type=oneshot
-ExecStart=/bin/sh -c 'sysctl -q kernel.deny_new_usb=1'
+ExecStart=/usr/bin/sysctl -q kernel.deny_new_usb=1
 
 [Install]
 WantedBy=multi-user.target
