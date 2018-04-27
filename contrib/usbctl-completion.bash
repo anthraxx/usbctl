@@ -3,6 +3,6 @@ _usbctl_completions() {
         return
     fi
 
-    COMPREPLY=($(compgen -W "protect unprotect enable disable on off temporary check status list ls" "${COMP_WORDS[1]}"))
+    COMPREPLY=($(compgen -W "protect unprotect enable disable on off temporary check status ls" "${COMP_WORDS[1]}"))
 }
 complete -F _usbctl_completions usbctl
