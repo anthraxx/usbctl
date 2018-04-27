@@ -1,7 +1,8 @@
-#!/bin/sh
+#!/bin/bash
 set -e
 
 SYSCTL_VAR=kernel.deny_new_usb
+DEVICES=
 
 usage() {
 	echo "Usage: $(basename "$0") [COMMAND]"
@@ -38,6 +39,21 @@ usb_list() {
 	lsusb -t
 }
 
+temporary() {
+	DEVICES=$(usb_list)
+	deny_new_usb 0
+	trap temporary_end INT TERM
+	sleep 10
+	temporary_end
+}
+
+temporary_end() {
+	deny_new_usb 1
+	NEW_DEVICES=$(usb_list)
+	diff <(printf "%s" "${DEVICES}") <(printf "%s" "${NEW_DEVICES}")
+	exit
+}
+
 case "$1" in
 	on|enable|unprotect)
 		deny_new_usb 0
@@ -46,10 +62,7 @@ case "$1" in
 		deny_new_usb 1
 		;;
 	temporary|tmp|temp)
-		deny_new_usb 0
-		trap "deny_new_usb 1 && exit" INT TERM
-		sleep 10
-		deny_new_usb 1
+		temporary
 		;;
     check)
         usb_protected
