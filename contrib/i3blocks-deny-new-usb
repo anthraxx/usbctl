@@ -1,0 +1,9 @@
+#!/bin/sh
+if usbctl check; then
+    echo protected
+    echo protected
+else
+    echo unprotected
+    echo unprotected
+    echo '#FF0000'
+fi
