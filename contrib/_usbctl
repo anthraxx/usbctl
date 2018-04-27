@@ -1,0 +1,19 @@
+#compdef _usbctl usbctl
+
+_usbctl() {
+	local -a _1st_arguments
+	_1st_arguments=(
+		{protect,disable,off}':disallow new usb devices (protected)'
+		{unprotect,enable,on}':allow new usb devices (unprotected)'
+		temporary':temporarily disable protection (default 10 sec)'
+		check':exits with 1 if usb is unprotected'
+		status':print current protection status'
+		{list,ls}':list currently connected usb devices'
+		log':display usb events in the kernel ring buffer'
+	)
+	_arguments '*:: :->command'
+	if (( CURRENT == 1 )); then
+		_describe -t commands "usbctl command" _1st_arguments
+		return
+	fi
+}
