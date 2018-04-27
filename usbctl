@@ -73,9 +73,9 @@ case "$1" in
 	temporary|tmp|temp)
 		temporary
 		;;
-    check)
-        usb_protected
-        ;;
+	check)
+		usb_protected
+		;;
 	status)
 		usb_status
 		;;
