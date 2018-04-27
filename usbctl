@@ -6,15 +6,16 @@ DEVICES=
 
 usage() {
 	echo "Usage: $(basename "$0") [COMMAND]"
-	echo "Control to deny new usb devices."
+	echo "Control usb device and protection settings."
 	echo
-	echo "Available commands:"
-	echo "  protect       enable protection against new usb devices"
-	echo "  unprotect     disable protection against new usb devices"
-	echo "  temporary     temporarily disable protection (default 10 sec)"
-	echo "  check         exits with 1 if usb is unprotected"
-	echo "  status        print current protection status"
-	echo "  list          list connected usb devices"
+	echo "COMMANDS:"
+	echo "  protect, disable, off -- disallow new usb devices (protected)"
+	echo "  unprotect, enable, on -- allow new usb devices (unprotected)"
+	echo "  temporary             -- temporarily disable protection (default 10 sec)"
+	echo "  check                 -- exits with 1 if usb is unprotected"
+	echo "  status                -- print current protection status"
+	echo "  list, ls              -- list currently connected usb devices"
+	echo "  log                   -- display usb events in the kernel ring buffer"
 }
 
 deny_new_usb() {
@@ -54,6 +55,10 @@ temporary_end() {
 	exit
 }
 
+usb_log() {
+	sudo dmesg --color="${USBCTL_LOG_COLOR:-always}" --ctime|grep -i usb --color="${USBCTL_GREP_COLOR:-never}"
+}
+
 case "$1" in
 	on|enable|unprotect)
 		deny_new_usb 0
@@ -72,6 +77,9 @@ case "$1" in
 		;;
 	list|ls)
 		usb_list
+		;;
+	log)
+		usb_log
 		;;
 	*)
 		usage
