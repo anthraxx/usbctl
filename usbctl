@@ -1,6 +1,8 @@
 #!/bin/sh
 set -e
 
+SYSCTL_VAR=kernel.deny_new_usb
+
 usage() {
 	echo "Usage: $(basename "$0") [COMMAND]"
 	echo "Control to deny new usb devices."
@@ -14,12 +16,12 @@ usage() {
 }
 
 deny_new_usb() {
-	echo "$1" | sudo tee /proc/sys/kernel/deny_new_usb > /dev/null
+	sudo sysctl -q "${SYSCTL_VAR}=${1}"
 	usb_status
 }
 
 usb_protected() {
-	grep -q 1 /proc/sys/kernel/deny_new_usb
+	sysctl -n "${SYSCTL_VAR}"|grep -q 1
 }
 
 usb_status() {
