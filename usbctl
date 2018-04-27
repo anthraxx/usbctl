@@ -1,6 +1,17 @@
 #!/bin/sh
 set -e
 
+usage() {
+	echo "Usage: $(basename "$0") [COMMAND]"
+	echo "Control to deny new usb devices."
+	echo
+	echo "Available commands:"
+	echo "  protect       disable protection against new usb devices"
+	echo "  unprotect     enable protection against new usb devices"
+	echo "  temporary     temporarily disable protection (default 10 sec)"
+	echo "  status        print current protection status"
+}
+
 deny_new_usb() {
 	echo "$1" | sudo tee /proc/sys/kernel/deny_new_usb > /dev/null
 	usb_status
@@ -27,7 +38,10 @@ case "$1" in
 		sleep 10
 		deny_new_usb 1
 		;;
-	*)
+	status)
 		usb_status
+		;;
+	*)
+		usage
 		;;
 esac
