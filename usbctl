@@ -40,6 +40,7 @@ case "$1" in
 		;;
 	temporary|tmp|temp)
 		deny_new_usb 0
+		trap "deny_new_usb 1 && exit" INT TERM
 		sleep 10
 		deny_new_usb 1
 		;;
