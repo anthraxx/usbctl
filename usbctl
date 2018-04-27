@@ -13,6 +13,7 @@ usage() {
 	echo "  temporary     temporarily disable protection (default 10 sec)"
 	echo "  check         exits with 1 if usb is unprotected"
 	echo "  status        print current protection status"
+	echo "  list          list connected usb devices"
 }
 
 deny_new_usb() {
@@ -33,6 +34,10 @@ usb_status() {
 	printf 'PROTECTED\e[0m\n'
 }
 
+usb_list() {
+	lsusb -t
+}
+
 case "$1" in
 	on|enable|unprotect)
 		deny_new_usb 0
@@ -51,6 +56,9 @@ case "$1" in
         ;;
 	status)
 		usb_status
+		;;
+	list|ls)
+		usb_list
 		;;
 	*)
 		usage
