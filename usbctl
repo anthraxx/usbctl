@@ -9,6 +9,7 @@ usage() {
 	echo "  protect       disable protection against new usb devices"
 	echo "  unprotect     enable protection against new usb devices"
 	echo "  temporary     temporarily disable protection (default 10 sec)"
+	echo "  check         exits with 1 if usb is unprotected"
 	echo "  status        print current protection status"
 }
 
@@ -17,8 +18,12 @@ deny_new_usb() {
 	usb_status
 }
 
+usb_protected() {
+	grep -q 1 /proc/sys/kernel/deny_new_usb
+}
+
 usb_status() {
-	if grep -q 1 /proc/sys/kernel/deny_new_usb; then
+	if usb_protected; then
 		printf '\e[32;1m'
 	else
 		printf '\e[31;1mUN'
@@ -38,6 +43,9 @@ case "$1" in
 		sleep 10
 		deny_new_usb 1
 		;;
+    check)
+        usb_protected
+        ;;
 	status)
 		usb_status
 		;;
