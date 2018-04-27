@@ -56,7 +56,11 @@ temporary_end() {
 }
 
 usb_log() {
-	sudo dmesg --color="${USBCTL_LOG_COLOR:-always}" --ctime|grep -i usb --color="${USBCTL_GREP_COLOR:-never}"
+	DMESG=dmesg
+	if sysctl -n kernel.dmesg_restrict | grep -q 1; then
+		DMESG="sudo ${DMESG}"
+	fi
+	${DMESG} --color="${USBCTL_LOG_COLOR:-always}" --ctime|grep -i usb --color="${USBCTL_GREP_COLOR:-never}"
 }
 
 case "$1" in
