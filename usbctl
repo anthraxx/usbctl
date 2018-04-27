@@ -34,10 +34,10 @@ usb_status() {
 }
 
 case "$1" in
-	enable|unprotect)
+	on|enable|unprotect)
 		deny_new_usb 0
 		;;
-	disable|protect)
+	off|disable|protect)
 		deny_new_usb 1
 		;;
 	temporary|tmp|temp)
