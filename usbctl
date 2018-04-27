@@ -12,7 +12,7 @@ usage() {
 	echo "  protect, disable, off -- disallow new usb devices (protected)"
 	echo "  unprotect, enable, on -- allow new usb devices (unprotected)"
 	echo "  temporary             -- temporarily disable protection (default 10 sec)"
-	echo "  check                 -- exits with 1 if usb is unprotected"
+	echo "  check                 -- exit with 1 if usb is unprotected"
 	echo "  status                -- print current protection status"
 	echo "  list, ls              -- list currently connected usb devices"
 	echo "  log                   -- display usb events in the kernel ring buffer"
