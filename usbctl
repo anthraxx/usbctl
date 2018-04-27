@@ -50,7 +50,7 @@ temporary() {
 temporary_end() {
 	deny_new_usb 1
 	NEW_DEVICES=$(usb_list)
-	diff <(printf "%s" "${DEVICES}") <(printf "%s" "${NEW_DEVICES}")
+	diff --color <(printf "%s" "${DEVICES}") <(printf "%s" "${NEW_DEVICES}")
 	exit
 }
 
