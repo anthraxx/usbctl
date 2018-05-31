@@ -4,7 +4,7 @@ set -e
 SYSCTL_VAR=kernel.deny_new_usb
 NEW_DEVICES=
 OLD_DEVICES=
-TEMPORARY_WAIT=10
+TEMPORARY_WAIT=60
 
 usage() {
 	echo "Usage: $(basename "$0") [COMMAND]"
