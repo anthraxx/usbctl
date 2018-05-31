@@ -2,7 +2,9 @@
 set -e
 
 SYSCTL_VAR=kernel.deny_new_usb
-DEVICES=
+NEW_DEVICES=
+OLD_DEVICES=
+TEMPORARY_WAIT=10
 
 usage() {
 	echo "Usage: $(basename "$0") [COMMAND]"
@@ -41,18 +43,28 @@ usb_list() {
 }
 
 temporary() {
-	DEVICES=$(usb_list)
+	OLD_DEVICES=$(usb_list)
 	deny_new_usb 0
 	trap temporary_end INT TERM
-	sleep 10
+	for _ in $(seq ${TEMPORARY_WAIT}); do
+		sleep 1
+		NEW_DEVICES=$(usb_list)
+		diff_usb_list "${OLD_DEVICES}" "${NEW_DEVICES}"
+		OLD_DEVICES="${NEW_DEVICES}"
+	done
 	temporary_end
 }
 
 temporary_end() {
 	deny_new_usb 1
-	NEW_DEVICES=$(usb_list)
-	diff --color <(printf "%s" "${DEVICES}") <(printf "%s" "${NEW_DEVICES}")
+	diff_usb_list "${OLD_DEVICES}" "$(usb_list)"
 	exit
+}
+
+diff_usb_list() {
+	local OLD_DEVICES="${1}"
+	local NEW_DEVICES="${2}"
+	diff --color <(printf "%s" "${OLD_DEVICES}") <(printf "%s" "${NEW_DEVICES}") ||:
 }
 
 usb_log() {
