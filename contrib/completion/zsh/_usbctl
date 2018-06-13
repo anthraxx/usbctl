@@ -10,6 +10,7 @@ _usbctl() {
 		status':print current protection status'
 		{list,ls}':list currently connected usb devices'
 		log':display usb events in the kernel ring buffer'
+		version':display version information and exit'
 	)
 	_arguments '*:: :->command'
 	if (( CURRENT == 1 )); then

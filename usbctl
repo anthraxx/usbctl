@@ -1,6 +1,7 @@
 #!/bin/bash
 set -e
 
+VERSION="1.0-dev"
 SYSCTL_VAR=kernel.deny_new_usb
 NEW_DEVICES=
 OLD_DEVICES=
@@ -18,6 +19,11 @@ usage() {
 	echo "  status                -- print current protection status"
 	echo "  list, ls              -- list currently connected usb devices"
 	echo "  log                   -- display usb events in the kernel ring buffer"
+	echo "  version               -- display version information and exit"
+}
+
+version() {
+	echo "$(basename "$0") ${VERSION}"
 }
 
 deny_new_usb() {
@@ -97,6 +103,9 @@ case "$1" in
 		;;
 	log)
 		usb_log
+		;;
+	version|--version)
+		version
 		;;
 	*)
 		usage
