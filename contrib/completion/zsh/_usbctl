@@ -5,7 +5,7 @@ _usbctl() {
 	_1st_arguments=(
 		{protect,disable,off}':disallow new usb devices (protected)'
 		{unprotect,enable,on}':allow new usb devices (unprotected)'
-		temporary':temporarily disable protection (default 10 sec)'
+		temporary':temporarily disable protection'
 		check':exits with 1 if usb is unprotected'
 		status':print current protection status'
 		{list,ls}':list currently connected usb devices'
