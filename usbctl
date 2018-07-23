@@ -14,7 +14,7 @@ usage() {
 	echo "COMMANDS:"
 	echo "  protect, disable, off -- disallow new usb devices (protected)"
 	echo "  unprotect, enable, on -- allow new usb devices (unprotected)"
-	echo "  temporary             -- temporarily disable protection (default ${TEMPORARY_WAIT} sec)"
+	echo "  temporary, temp, tmp  -- temporarily disable protection (default ${TEMPORARY_WAIT} sec)"
 	echo "  check                 -- exit with 1 if usb is unprotected"
 	echo "  status                -- print current protection status"
 	echo "  list, ls              -- list currently connected usb devices"
