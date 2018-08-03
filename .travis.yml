@@ -1,0 +1,16 @@
+sudo: required
+
+services:
+- docker
+
+arch:
+  packages:
+    - shellcheck
+    - make
+  script:
+    - sudo pacman -Syu --noconfirm --needed "${CONFIG_PACKAGES[@]}"
+    - make test
+
+script: 'curl -s https://raw.githubusercontent.com/mikkeloscar/arch-travis/master/arch-travis.sh | bash'
+
+# vim: ft=yaml ts=2 sw=2 et:
