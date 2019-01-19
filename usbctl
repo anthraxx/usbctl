@@ -6,6 +6,11 @@ SYSCTL_VAR=kernel.deny_new_usb
 NEW_DEVICES=
 OLD_DEVICES=
 TEMPORARY_WAIT=60
+SUDO="sudo"
+
+if [[ ${EUID} -eq 0 ]]; then
+	SUDO=""
+fi
 
 usage() {
 	echo "Usage: $(basename "$0") [COMMAND]"
@@ -27,7 +32,7 @@ version() {
 }
 
 deny_new_usb() {
-	sudo sysctl -q "${SYSCTL_VAR}=${1}"
+	${SUDO} sysctl -q "${SYSCTL_VAR}=${1}"
 	usb_status
 }
 
@@ -77,7 +82,7 @@ diff_usb_list() {
 usb_log() {
 	DMESG=dmesg
 	if sysctl -n kernel.dmesg_restrict | grep -q 1; then
-		DMESG="sudo ${DMESG}"
+		DMESG="${SUDO} ${DMESG}"
 	fi
 	${DMESG} --color="${USBCTL_LOG_COLOR:-always}" --ctime|grep -i usb --color="${USBCTL_GREP_COLOR:-never}"
 }
