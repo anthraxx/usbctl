@@ -1,7 +1,7 @@
 DESTDIR=
 PREFIX=/usr
 BINDIR=/bin
-MANDIR=/man/man1
+MANDIR=/share/man/man1
 ZSHCOMPDIR=/share/zsh/site-functions
 BASHCOMPDIR=/share/bash/bash-completion/completions
 SYSTEMDUNITDIR=/lib/systemd/system
