@@ -1,6 +1,6 @@
 [Unit]
 Description=deny new usb devices
-ConditionFileNotEmpty=/proc/sys/kernel/deny_new_usb
+ConditionPathExists=/proc/sys/kernel/deny_new_usb
 
 [Service]
 Type=oneshot
