@@ -7,42 +7,42 @@ usbctl \- Linux-hardened deny_new_usb control
 .SH "DESCRIPTION"
 Control usb device and protection settings.
 .SH "COMMANDS"
-.PP 
+.PP
 \fIprotect\fR, \fIdisable\fR, \fIoff\fR
 .RS 4
 disallow new usb devices (protected)
 .RE
-.PP 
+.PP
 \fIunprotect\fR, \fIenable\fR, \fIon\fR
 .RS 4
 allow new usb devices (unprotected)
 .RE
-.PP 
-\fItemporary\fR, \fItemp\fR, \fItmp\fR
+.PP
+\fItemporary\fR, \fItemp\fR, \fItmp [seconds]\fR
 .RS 4
 temporarily disable protection (default 60 sec)
 .RE
-.PP 
+.PP
 \fIcheck\fR
 .RS 4
 exit with 1 if usb is unprotected
 .RE
-.PP 
+.PP
 \fIstatus\fR
 .RS 4
 print current protection status
 .RE
-.PP 
+.PP
 \fIlist\fR, \fIls\fR
 .RS 4
 list currently connected usb devices
 .RE
-.PP 
+.PP
 \fIlog\fR
 .RS 4
 display usb events in the kernel ring buffer
 .RE
-.PP 
+.PP
 \fIversion\fR
 .RS 4
 display version information and exit
