@@ -8,6 +8,10 @@ OLD_DEVICES=
 TEMPORARY_WAIT_DEFAULT=60
 SUDO="sudo"
 
+# curated PATH to sanitize executables in a portable way
+PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+export PATH
+
 if [[ ${EUID} -eq 0 ]]; then
 	SUDO=""
 fi
