@@ -12,6 +12,19 @@ if [[ ${EUID} -eq 0 ]]; then
 	SUDO=""
 fi
 
+# prefer terminal safe colored and bold text when tput is supported
+if tput setaf 0 &>/dev/null; then
+	ALL_OFF="$(tput sgr0)"
+	BOLD="$(tput bold)"
+	GREEN="${BOLD}$(tput setaf 2)"
+	RED="${BOLD}$(tput setaf 1)"
+else
+	ALL_OFF="\e[0m"
+	BOLD="\e[1m"
+	GREEN="${BOLD}\e[32m"
+	RED="${BOLD}\e[31m"
+fi
+
 usage() {
 	echo "Usage: $(basename "$0") [COMMAND]"
 	echo "Control usb device and protection settings."
@@ -42,11 +55,10 @@ usb_protected() {
 
 usb_status() {
 	if usb_protected; then
-		printf '\e[32;1m'
+		printf "%s\n" "${GREEN}PROTECTED${ALL_OFF}"
 	else
-		printf '\e[31;1mUN'
+		printf "%s\n" "${RED}UNPROTECTED${ALL_OFF}"
 	fi
-	printf 'PROTECTED\e[0m\n'
 }
 
 usb_list() {
