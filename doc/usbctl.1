@@ -3,9 +3,16 @@
 .SH "NAME"
 usbctl \- Linux-hardened deny_new_usb control
 .SH "SYNOPSIS"
-\fBusbctl\fR \fI[COMMAND]\fR
+\fBusbctl\fR [\fIOPTIONS\fR]... [\fICOMMAND\fR]
 .SH "DESCRIPTION"
 Control usb device and protection settings.
+.SH "OPTIONS"
+.PP
+\fI--machine-readable\fR
+.RS 4
+enables machine readable output mode
+.RE
+.PP
 .SH "COMMANDS"
 .PP
 \fIprotect\fR, \fIdisable\fR, \fIoff\fR
@@ -18,7 +25,7 @@ disallow new usb devices (protected)
 allow new usb devices (unprotected)
 .RE
 .PP
-\fItemporary\fR, \fItemp\fR, \fItmp [seconds]\fR
+\fItemporary\fR, \fItemp\fR, \fItmp\fR [\fIseconds\fR]
 .RS 4
 temporarily disable protection (default 60 sec)
 .RE

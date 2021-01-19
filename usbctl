@@ -5,7 +5,7 @@ VERSION="1.3-dev"
 SYSCTL_VAR=kernel.deny_new_usb
 NEW_DEVICES=
 OLD_DEVICES=
-TEMPORARY_WAIT=${2:-60}
+TEMPORARY_WAIT_DEFAULT=60
 SUDO="sudo"
 
 if [[ ${EUID} -eq 0 ]]; then
@@ -26,13 +26,16 @@ else
 fi
 
 usage() {
-	echo "Usage: $(basename "$0") [COMMAND]"
+	echo "Usage: $(basename "$0") [OPTIONS] [COMMAND]"
 	echo "Control usb device and protection settings."
+	echo
+	echo "OPTIONS:"
+	echo "  --machine-readable             -- enables machine readable output mode"
 	echo
 	echo "COMMANDS:"
 	echo "  protect, disable, off          -- disallow new usb devices (protected)"
 	echo "  unprotect, enable, on          -- allow new usb devices (unprotected)"
-	echo "  temporary, temp, tmp [seconds] -- temporarily disable protection (default ${TEMPORARY_WAIT} sec)"
+	echo "  temporary, temp, tmp [seconds] -- temporarily disable protection (default ${TEMPORARY_WAIT_DEFAULT} sec)"
 	echo "  check                          -- exit with 1 if usb is unprotected"
 	echo "  status                         -- print current protection status"
 	echo "  list, ls                       -- list currently connected usb devices"
@@ -55,9 +58,17 @@ usb_protected() {
 
 usb_status() {
 	if usb_protected; then
-		printf "%s\n" "${GREEN}PROTECTED${ALL_OFF}"
+		if (( MACHINE_READABLE )); then
+			printf "protected\n"
+		else
+			printf "USB device status: %s\n" "${GREEN}PROTECTED${ALL_OFF}"
+		fi
 	else
-		printf "%s\n" "${RED}UNPROTECTED${ALL_OFF}"
+		if (( MACHINE_READABLE )); then
+			printf "unprotected\n"
+		else
+			printf "USB device status: %s\n" "${RED}UNPROTECTED${ALL_OFF}"
+		fi
 	fi
 }
 
@@ -66,11 +77,14 @@ usb_list() {
 }
 
 temporary() {
+	local wait_seconds
+	wait_seconds=$1
+
 	OLD_DEVICES=$(usb_list)
 	deny_new_usb 0
 	echo 'Press Ctrl-C to finish'
 	trap temporary_end INT TERM
-	for _ in $(seq "$((TEMPORARY_WAIT))"); do
+	for _ in $(seq "$((wait_seconds))"); do
 		sleep 1
 		NEW_DEVICES=$(usb_list)
 		diff_usb_list "${OLD_DEVICES}" "${NEW_DEVICES}"
@@ -88,7 +102,7 @@ temporary_end() {
 diff_usb_list() {
 	local OLD_DEVICES="${1}"
 	local NEW_DEVICES="${2}"
-	diff --color <(printf "%s" "${OLD_DEVICES}") <(printf "%s" "${NEW_DEVICES}") ||:
+	diff --color="${USBCTL_DIFF_COLOR:-auto}" <(printf "%s" "${OLD_DEVICES}") <(printf "%s" "${NEW_DEVICES}") ||:
 }
 
 usb_log() {
@@ -99,34 +113,46 @@ usb_log() {
 	${DMESG} --color="${USBCTL_LOG_COLOR:-always}" --ctime|grep -i usb --color="${USBCTL_GREP_COLOR:-never}"
 }
 
-case "$1" in
-	on|enable|unprotect)
-		deny_new_usb 0
-		;;
-	off|disable|protect)
-		deny_new_usb 1
-		;;
-	temporary|tmp|temp)
-		temporary
-		;;
-	check)
-		usb_protected
-		;;
-	status)
-		usb_status
-		;;
-	list|ls)
-		usb_list
-		;;
-	log)
-		usb_log
-		;;
-	version|--version)
-		version
-		;;
-	*)
-		usage
-		;;
-esac
+# option checking
+while :; do
+	case "$1" in
+		--machine-readable)
+			MACHINE_READABLE=1
+			USBCTL_LOG_COLOR=never
+			USBCTL_DIFF_COLOR=never
+			USBCTL_GREP_COLOR=never
+			shift
+			continue
+			;;
+		on|enable|unprotect)
+			deny_new_usb 0
+			;;
+		off|disable|protect)
+			deny_new_usb 1
+			;;
+		temporary|tmp|temp)
+			temporary "${2:-$TEMPORARY_WAIT_DEFAULT}"
+			;;
+		check)
+			usb_protected
+			;;
+		status)
+			usb_status
+			;;
+		list|ls)
+			usb_list
+			;;
+		log)
+			usb_log
+			;;
+		version|--version)
+			version
+			;;
+		*)
+			usage
+			;;
+	esac
+	break
+done
 
 # vim:set noet:
