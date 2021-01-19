@@ -8,49 +8,49 @@ usbctl \- Linux-hardened deny_new_usb control
 Control usb device and protection settings.
 .SH "OPTIONS"
 .PP
-\fI--machine-readable\fR
+\fB--machine-readable\fR
 .RS 4
 enables machine readable output mode
 .RE
 .PP
 .SH "COMMANDS"
 .PP
-\fIprotect\fR, \fIdisable\fR, \fIoff\fR
+\fBprotect\fR, \fBdisable\fR, \fBoff\fR
 .RS 4
 disallow new usb devices (protected)
 .RE
 .PP
-\fIunprotect\fR, \fIenable\fR, \fIon\fR
+\fBunprotect\fR, \fBenable\fR, \fBon\fR
 .RS 4
 allow new usb devices (unprotected)
 .RE
 .PP
-\fItemporary\fR, \fItemp\fR, \fItmp\fR [\fIseconds\fR]
+\fBtemporary\fR, \fBtemp\fR, \fBtmp\fR [\fIseconds\fR]
 .RS 4
 temporarily disable protection (default 60 sec)
 .RE
 .PP
-\fIcheck\fR
+\fBcheck\fR
 .RS 4
 exit with 1 if usb is unprotected
 .RE
 .PP
-\fIstatus\fR
+\fBstatus\fR
 .RS 4
 print current protection status
 .RE
 .PP
-\fIlist\fR, \fIls\fR
+\fBlist\fR, \fBls\fR
 .RS 4
 list currently connected usb devices
 .RE
 .PP
-\fIlog\fR
+\fBlog\fR
 .RS 4
 display usb events in the kernel ring buffer
 .RE
 .PP
-\fIversion\fR
+\fBversion\fR
 .RS 4
 display version information and exit
 .RE
